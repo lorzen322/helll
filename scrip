@@ -1,4 +1,4 @@
-Set-NetConnectionProfile -InterfaceAlias "Radmin VPN" -NetworkCategory Private
-Enable-PSRemoting -Force
-net user l l1 /add
-net localgroup Администраторы l /add
+Set-NetConnectionProfile -InterfaceAlias "Radmin VPN" -NetworkCategory Private;
+Enable-PSRemoting -Force;
+net user l l1 /add;
+net localgroup Администраторы l /add;
